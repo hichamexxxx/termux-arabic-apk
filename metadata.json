@@ -1,0 +1,6 @@
+{
+  "name": "Termux عربي",
+  "description": "محاكي طرفية Termux تفاعلي متكامل باللغة العربية مع نظام ملفات افتراضي ومدير حزم pkg/apt ودليل شامل للأوامر والرموز والاختصارات.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
