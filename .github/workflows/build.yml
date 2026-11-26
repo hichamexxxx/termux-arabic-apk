@@ -21,14 +21,21 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 36
+          build-tools: 35.0.0
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.13'
+          gradle-version: '9.1.0'
 
-      - name: Generate missing wrapper if needed
-        run: gradle wrapper --gradle-version 8.13 --distribution-type bin
+      - name: Ensure Gradle wrapper exists
+        run: |
+          if [ ! -f ./gradlew ]; then
+            gradle wrapper --gradle-version 9.1.0 --distribution-type bin
+          fi
+          chmod +x ./gradlew
 
       - name: Ensure debug keystore exists
         run: |
@@ -40,7 +47,7 @@ jobs:
           fi
 
       - name: Build Debug APK
-        run: gradle assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
