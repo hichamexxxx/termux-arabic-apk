@@ -19,11 +19,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          api-level: 36
-          build-tools: 35.0.0
+      - name: Prepare Android SDK
+        run: |
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          echo "sdk.dir=$SDK_ROOT" > local.properties
+          SDKMANAGER=$(find "$SDK_ROOT/cmdline-tools" -name sdkmanager -type f 2>/dev/null | head -n 1)
+          if [ -n "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platforms;android-36" "build-tools;35.0.0" "platform-tools" || true
+          fi
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
